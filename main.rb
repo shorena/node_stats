@@ -78,6 +78,7 @@ def connect_to_node
   rescue
     puts "couldnt connect to node, make sure the config file is correct."
     p c
+    abort "[ERROR] unspecified config error."
   end
 end
 
