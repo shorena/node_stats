@@ -3,7 +3,7 @@
 require './lib/bitcoin_rpc.rb'
 require 'yaml'
 require 'rrd' #RailsRRDTool
-$config_f = File.absolute_path('./.config/config2.txt')
+$config_f = File.absolute_path('./.config/config.txt')
 
 # For the dots to indicate progress and similar stuff
 def print_and_flush(string)
