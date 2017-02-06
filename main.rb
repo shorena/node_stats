@@ -2,7 +2,7 @@
 
 require './lib/bitcoin_rpc.rb'
 require 'yaml'
-require 'rrd' #RailsRRDTool
+require 'rrd' #RailsRRDTool => https://github.com/joshrendek/rails_rrdtool
 $config_f = File.absolute_path('./.config/config.txt')
 
 # For the dots to indicate progress and similar stuff
@@ -40,6 +40,8 @@ Node-Port: #{config[:port]}"
     break if input == 'y'
   end
   begin
+    dir = "./.config"
+    Dir.mkdir(dir) unless Dir.exist?(dir)
     f = File.open($config_f, 'w') { |f| f.puts config.to_yaml }
   rescue
     puts "[ERROR] couldnt write config to file, #{$config_f}"
@@ -50,9 +52,8 @@ Node-Port: #{config[:port]}"
 end
 
 def load_config()
-  begin
-    f = File.open($config_f)
-    return YAML::load_file(f)
+  f = File.open($config_f)
+  return YAML::load_file(f)
   rescue
     puts "[ERROR]Could not load config file."
     puts "(W)rite new or (a)bort?"
@@ -68,7 +69,6 @@ def load_config()
     end
   ensure
     f.close unless f.nil?
-  end
 end
 
 def connect_to_node
@@ -86,5 +86,24 @@ def update_databases()
   todo("update_databases")
 end
 
+# Creates all currentyl needed Databases. 
+def create_default_databases()
+  # Create subfolder for databases if needed.
+  dir = "./databases"
+  Dir.mkdir(dir) unless Dir.exist?(dir)
+  # TODO: sanity check: if db-file exist, create copy first, make sure the
+  # name of the copy makes it highly unlikely to match an already existing
+  # file, e.g. current epoch.
+  # TODO: Create DBs
+end
+
 connect_to_node #creates global instance $node
-update_databases()
+#update_databases()
+
+create_default_databases()
+
+
+
+
+
+
